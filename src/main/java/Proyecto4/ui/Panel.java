@@ -49,11 +49,18 @@ public class Panel extends JPanel {
         btnEliminar.setBounds(255, 475, 80, 40);
         this.add(btnLista);
         this.add(btnEliminar);
-        loadTable();
-        loadAction();
+        iniciarTabla();
+        cargarLista();
     }
 
-    private void loadAction() {
+    private void iniciarTabla() {
+        this.remove(scroll);
+        scroll.setVisible(true);
+        columnas = new Object[]{"Nombre y Apellido", "Edad"};
+        modelotabla = new DefaultTableModel(columnas, 0);
+    }
+
+    private void cargarLista() {
         btnLista.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,13 +69,6 @@ public class Panel extends JPanel {
                 }
             }
         });
-    }
-
-    private void loadTable() {
-        this.remove(scroll);
-        scroll.setVisible(true);
-        columnas = new Object[]{"Nombre y Apellido", "Edad"};
-        modelotabla = new DefaultTableModel(columnas, 0);
     }
 
     public void leerTxt() {

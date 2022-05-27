@@ -29,11 +29,6 @@ public class LeerArchivo extends JFrame {
         repaint();
     }
 
-    private void quitarPanelPrincipal() {
-        this.getContentPane().remove(panel);
-        this.revalidate();
-    }
-
     private void cerrar() {
         try {
             this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
@@ -49,9 +44,9 @@ public class LeerArchivo extends JFrame {
     }
 
     private void confirmarSalida() {
-        int valor = JOptionPane.showConfirmDialog(this, "¿Esta seguro de cerrar la aplicación?", "Advertencia", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+        int valor = JOptionPane.showConfirmDialog(this, "¿Esta seguro de cerrar la aplicación?", "Alerta", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
         if (valor == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(null, "Gracias por su visita, Hasta pronto", "Gracias", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Se cerrara el programa", "Gracias", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
     }
