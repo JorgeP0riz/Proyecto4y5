@@ -11,11 +11,11 @@ public class Ventana extends JFrame implements ActionListener {
 
     private Imagen img;
 
-    private JLabel lbEfectos = new JLabel("Efectos");
-    private JButton btnTransformacionHorizontal = new JButton("Espejo Horizontal");
-    private JButton btnTransformacionVertical = new JButton("Espejo Vertical");
-    private JButton btnTransformacionPixelado = new JButton("Pixelado");
-    private JButton btnTransformacionSuavizado = new JButton("Suavizado");
+    private JLabel lbEfectos = new JLabel("Filtro");
+    private JButton btnTransformacionHorizontal = new JButton("Filtro Horizontal");
+    private JButton btnTransformacionVertical = new JButton("Filtro Vertical");
+    private JButton btnTransformacionPixelado = new JButton("Pixelar");
+    private JButton btnTransformacionSuavizado = new JButton("Suavizar");
     private JButton btnTransformacionBlancoNegro = new JButton("Blanco y Negro");
     private JButton btnImagenOriginal = new JButton("Imagen Original");
     private JButton btnTransformacionTonosGrises = new JButton("Tonos Grises");
@@ -43,7 +43,7 @@ public class Ventana extends JFrame implements ActionListener {
     public void init1() {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(null);
-        setSize(250, 500);
+        setSize(250, 400);
         setLocationRelativeTo(null);
         setVisible(true);
 
@@ -62,10 +62,6 @@ public class Ventana extends JFrame implements ActionListener {
         y += 40;
         btnTransformacionHorizontal.setBounds(x, y, 150, 30);
         y += 40;
-        btnTransformacionPixelado.setBounds(x,y,150,30);
-        y += 40;
-        btnTransformacionSuavizado.setBounds(x,y,150,30);
-        y += 40;
         btnTransformacionBlancoNegro.setBounds(x,y,150,30);
         y += 40;
         btnTransformacionTonosGrises.setBounds(x,y,150,30);
@@ -76,14 +72,10 @@ public class Ventana extends JFrame implements ActionListener {
         y += 40;
         btnTransformacionFiltroAzul.setBounds(x,y,150,30);
         y += 40;
-        btnImagenOriginal.setBounds(x, y, 150, 30);
 
-        btnImagenOriginal.addActionListener(this);
         btnTransformacionBlancoNegro.addActionListener(this);
         btnTransformacionHorizontal.addActionListener(this);
         btnTransformacionVertical.addActionListener(this);
-        btnTransformacionPixelado.addActionListener(this);
-        btnTransformacionSuavizado.addActionListener(this);
         btnTransformacionTonosGrises.addActionListener(this);
         btnTransformacionFiltroRojo.addActionListener(this);
         btnTransformacionFiltroVerde.addActionListener(this);
@@ -92,9 +84,6 @@ public class Ventana extends JFrame implements ActionListener {
         panel.add(lbEfectos);
         panel.add(btnTransformacionVertical);
         panel.add(btnTransformacionHorizontal);
-        panel.add(btnImagenOriginal);
-        panel.add(btnTransformacionPixelado);
-        panel.add(btnTransformacionSuavizado);
         panel.add(btnTransformacionBlancoNegro);
         panel.add(btnTransformacionTonosGrises);
         panel.add(btnTransformacionFiltroRojo);
@@ -108,8 +97,6 @@ public class Ventana extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnImagenOriginal) {
 
-            img.restablecerImagen();
-
         } else if (e.getSource() == btnTransformacionVertical) {
 
             TransformarVertical transformacionVertical = new TransformarVertical(img);
@@ -121,17 +108,9 @@ public class Ventana extends JFrame implements ActionListener {
             transformacionHorizontal.transformar(punto1,punto2);
 
         } else if (e.getSource() == btnTransformacionPixelado){
-
             JOptionPane.showMessageDialog(null,"Este filtro está en construcción");
-            //TransformacionPixelado transformacionPixelado = new TransformacionPixelado(img);
-            //transformacionPixelado.transformar(punto1,punto2);
-
         } else if (e.getSource() == btnTransformacionSuavizado){
-
             JOptionPane.showMessageDialog(null,"Este filtro está en construcción");
-//            TransformacionSuavizado transformacionSuavizado = new TransformacionSuavizado(img);
-//            transformacionSuavizado.transformar(punto1,punto2);
-
         } else if (e.getSource() == btnTransformacionBlancoNegro){
 
             TransformarByN transformacionBlancoNegro = new TransformarByN(img);

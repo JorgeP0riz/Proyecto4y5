@@ -1,11 +1,13 @@
-package Proyecto4.ui;
+package Proyecto4.Ui;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class LeerArchivo extends JFrame {
+    private Logger logger = LogManager.getRootLogger();
     private Panel panel;
 
     public LeerArchivo() {
@@ -14,22 +16,25 @@ public class LeerArchivo extends JFrame {
     }
 
     private void init() {
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         panel = new Panel();
         añadirPanelPrincipal();
         this.setResizable(false);
-        cerrar();
+        //cerrar();
         this.pack();
         this.setLocationRelativeTo(null);
+        logger.info("Se inicia las cracteristicas del Frame");
     }
 
     private void añadirPanelPrincipal() {
         this.getContentPane().setLayout(new BorderLayout());
         this.getContentPane().add(panel, BorderLayout.CENTER);
         this.revalidate();
+        logger.info("Se agrega el panel al Frame");
         repaint();
     }
 
-    private void cerrar() {
+    /*private void cerrar() {
         try {
             this.setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
             addWindowListener(new WindowAdapter() {
@@ -49,5 +54,5 @@ public class LeerArchivo extends JFrame {
             JOptionPane.showMessageDialog(null, "Se cerrara el programa", "Gracias", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
-    }
+    }*/
 }

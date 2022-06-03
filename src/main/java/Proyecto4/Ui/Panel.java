@@ -1,4 +1,7 @@
-package Proyecto4.ui;
+package Proyecto4.Ui;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -16,6 +19,8 @@ import java.util.regex.Pattern;
 
 public class Panel extends JPanel {
 
+    private Logger logger = LogManager.getRootLogger();
+
     private JButton btnLista;
     private JButton btnEliminar;
     private DefaultTableModel modelotabla;
@@ -23,10 +28,10 @@ public class Panel extends JPanel {
     private JScrollPane scroll;
     private Object columnas[];
 
-
     public Panel() {
-        loadComponents();
+        cargarComponentes();
         this.setVisible(true);
+        logger.info("Se cargan los componentes del panel");
     }
 
 
@@ -35,7 +40,7 @@ public class Panel extends JPanel {
         return new Dimension(550, 550);
     }
 
-    private void loadComponents() {
+    private void cargarComponentes() {
         columnas = null;
         modelotabla = new DefaultTableModel(columnas, 0);
         tabla = new JTable(modelotabla);
@@ -44,9 +49,9 @@ public class Panel extends JPanel {
         scroll.setVisible(false);
         this.setLayout(null);
         btnLista = new JButton("Lista");
-        btnLista.setBounds(165, 475, 80, 40);
-        btnEliminar = new JButton("Eliminar");
-        btnEliminar.setBounds(255, 475, 80, 40);
+        btnLista.setBounds(125, 475, 80, 40);
+        btnEliminar = new JButton("Borrar");
+        btnEliminar.setBounds(355, 475, 80, 40);
         this.add(btnLista);
         this.add(btnEliminar);
         iniciarTabla();
@@ -56,8 +61,9 @@ public class Panel extends JPanel {
     private void iniciarTabla() {
         this.remove(scroll);
         scroll.setVisible(true);
-        columnas = new Object[]{"Nombre y Apellido", "Edad"};
+        columnas = new Object[]{"ID", "Nombre y Apellido", "Numero Telefono"};
         modelotabla = new DefaultTableModel(columnas, 0);
+        logger.info("Se inicia la tabla con las columnas: "+ columnas);
     }
 
     private void cargarLista() {
@@ -65,31 +71,35 @@ public class Panel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource().equals(btnLista)) {
-                    leerTxt();
+                    leerArchivoTxt();
                 }
             }
         });
     }
 
-    public void leerTxt() {
-        String expreg = "^([A-Za-z])([A-Za-z]+)\s+([A-Za-z])([A-Za-z]+)\s+(\\d+)$";
+    public void leerArchivoTxt() {
+        String expreg = "^(\\d+)\s+([A-Za-z])([A-Za-z]+)\s+([A-Za-z])([A-Za-z]+)\s+(\\d+)$";
         BufferedReader leer = null;
         try {
             FileNameExtensionFilter filtro = new FileNameExtensionFilter("Tipo de archivo", "txt");
+            logger.info("Se crea un filtro para reconocer los Archivos Txt"+ filtro);
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Escoge el archivo txt");
             chooser.setFileFilter(filtro);
             int validarArchivo = chooser.showOpenDialog(null);
             if (validarArchivo == JFileChooser.APPROVE_OPTION) {
                 File archivo = new File(String.valueOf(chooser.getSelectedFile()));
+                logger.debug("Encontrar el archivo como un String: " +archivo);
                 leer = new BufferedReader(new FileReader(archivo));
+                logger.info("Leer el Archivo es :" +leer);
                 String temp = null;
                 while ((temp = leer.readLine()) != null) {
                     String aux = temp;
                     Pattern r = Pattern.compile(expreg);
                     Matcher m = r.matcher(aux);
                     while (m.find()) {
-                        Object[] fila = {m.group(1).toUpperCase() + m.group(2).toLowerCase() + " " + m.group(3).toUpperCase() + m.group(4).toLowerCase(), m.group(5)};
+                        Object[] fila = {m.group(1), m.group(2).toUpperCase() + m.group(3).toLowerCase() + " " + m.group(4).toUpperCase() + m.group(5).toLowerCase(), m.group(6)};
+                        logger.info("se añade la lista de perosnas: " + fila);
                         modelotabla.addRow(fila);
                     }
                     tabla = new JTable(modelotabla);

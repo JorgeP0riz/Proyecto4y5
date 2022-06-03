@@ -20,7 +20,6 @@ public class Imagen {
 
     private Lista<int[][]> listaCambios = new Lista<>();
     private int nroCambios = 0;
-    private Lista<String> cambiosString = new Lista<>();
 
     public Imagen(String path) {
         this.path = path;
@@ -30,11 +29,11 @@ public class Imagen {
         setNroCambios(0);
     }
 
-    public void leerImagen(){
+    public void leerImagen() {//lee la imagen
         BufferedImage bi = null;
 
-        try{
-            File f =  new File(path);
+        try {
+            File f = new File(path);
             bi = ImageIO.read(f);
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,7 +43,7 @@ public class Imagen {
         initImagen(bi);
     }
 
-    private void initImagen(BufferedImage bi){
+    private void initImagen(BufferedImage bi) {//crea la imagen
         ancho = bi.getWidth();
         alto = bi.getHeight();
 
@@ -52,24 +51,24 @@ public class Imagen {
 
         for (int i = 0; i < ancho; i++) {
             for (int j = 0; j < alto; j++) {
-                int rgb = bi.getRGB(i,j);
+                int rgb = bi.getRGB(i, j);
                 pixeles[i][j] = rgb;
             }
         }
 
-        cambios.firePropertyChange("IMAGEN", 1,0);
+        cambios.firePropertyChange("IMAGEN", 1, 0);
     }
 
-    public void dibujar(Graphics2D g){
+    public void dibujar(Graphics2D g) {
         for (int i = 0; i < ancho; i++) {
             for (int j = 0; j < alto; j++) {
                 g.setColor(new Color(pixeles[i][j]));
-                g.drawLine(i,j,i,j);
+                g.drawLine(i, j, i, j);
             }
         }
     }
 
-    public void añadirCambios(String txt){
+    public void añadirCambios(String txt) {
 
         int aux[][] = new int[ancho][alto];
 
@@ -80,77 +79,52 @@ public class Imagen {
         }
 
         if (nroCambios < listaCambios.size() - 1) {
-            System.out.print("Se estan eliminando los siguientes nodos: ");
 
             int vecesEliminar = listaCambios.size() - (nroCambios + 1);
             int indiceEliminar = nroCambios + 1;
 
             for (int i = nroCambios + 1; i <= vecesEliminar; i++) {
-                System.out.print(cambiosString.get(indiceEliminar) + " -> ");
-                cambiosString.eliminar(indiceEliminar);
                 listaCambios.eliminar(indiceEliminar);
             }
-
         }
-
         listaCambios.add(aux);
-        cambiosString.add(txt);
-
-        String aux1 = "";
-        for (int i = 0; i < cambiosString.size(); i++) {
-            aux1 += cambiosString.get(i) + " -> ";
-        }
-
-        System.out.println("La lista quedaría así: " + aux1);
 
         this.nroCambios++;
     }
 
-    public void restarCambios(){
+    public void undo() {
         nroCambios--;
 
-        if (nroCambios < 0){
+        if (nroCambios < 0) {
             nroCambios = 0;
         }
         setPixeles(listaCambios.get(nroCambios));
-        System.out.println(cambiosString.get(nroCambios));
     }
 
-    public void aumentarCambios(){
+    public void redo() {
         nroCambios++;
 
-        if (nroCambios > listaCambios.size()-1){
-            nroCambios = listaCambios.size()-1;
+        if (nroCambios > listaCambios.size() - 1) {
+            nroCambios = listaCambios.size() - 1;
         }
-
         setPixeles(listaCambios.get(nroCambios));
-        System.out.println(cambiosString.get(nroCambios));
     }
 
-    public void seleccionarCambios(int pos){
-        this.setPixeles(listaCambios.get(pos));
-    }
-
-    public void addObserver(Panel panelImagen){
+    public void addObserver(Panel panelImagen) {
         cambios.addPropertyChangeListener(panelImagen);
     }
 
-    public void setColor(int color, int i, int j){
+    public void setColor(int color, int i, int j) {
         this.pixeles[i][j] = color;
     }
 
-    public int getColor(int i, int j){
+    public int getColor(int i, int j) {
         return this.pixeles[i][j];
     }
 
-    public void actualizarImagen(String txt){
-        cambios.firePropertyChange("IMAGEN",1,0);
+    public void actualizarImagen(String txt) {
+        cambios.firePropertyChange("IMAGEN", 1, 0);
         añadirCambios(txt);
-    }
-
-    public void restablecerImagen(){
-//        setPixeles(imgOriginal);
-//        actualizarImagen();
     }
 
     public String getPath() {

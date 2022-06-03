@@ -34,16 +34,16 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseListen
         init1();
     }
 
-    public void init1(){
+    public void init1() {
         setLayout(null);
-        setSize(ancho,alto);
+        setSize(ancho, alto);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (img == null){
+        if (img == null) {
             return;
         }
 
@@ -52,44 +52,120 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseListen
 
         img.dibujar(g2d);
 
-        if (punto1 != null && punto2 != null){
+        if (punto1 != null && punto2 != null) {
             dibujarAreaSeleccionada(g2d);
         }
 
-        g.drawImage(bi,0,0,null);
+        g.drawImage(bi, 0, 0, null);
     }
 
-    private void dibujarAreaSeleccionada(Graphics2D g){
+    private void dibujarAreaSeleccionada(Graphics2D g) {
         int x1 = punto1.x;
         int y1 = punto1.y;
         int x2 = punto2.x;
         int y2 = punto2.y;
-        g.setColor(Color.red);
-        g.drawLine(x1,y1,x2,y1);
-        g.drawLine(x2,y1,x2,y2);
-        g.drawLine(x2,y2,x1,y2);
-        g.drawLine(x1,y2,x1,y1);
+        g.setColor(Color.blue);
+        g.drawLine(x1, y1, x2, y1);
+        g.drawLine(x2, y1, x2, y2);
+        g.drawLine(x2, y2, x1, y2);
+        g.drawLine(x1, y2, x1, y1);
     }
 
-    public void verificarPunto2(){
-        if (punto1.x < 0){
+    public void verificarPunto2() {
+        if (punto1.x < 0) {
             punto1.x = 0;
         }
 
-        if (punto2.x > img.getAncho()){
+        if (punto2.x > img.getAncho()) {
             punto2.x = img.getAncho();
-        } else if (punto2.x < 0){
+        } else if (punto2.x < 0) {
             punto2.x = 0;
         }
 
-        if (punto2.y > img.getAlto()){
+        if (punto2.y > img.getAlto()) {
             punto2.y = img.getAlto();
-        } else if (punto2.y < 0 ){
+        } else if (punto2.y < 0) {
             punto2.y = 0;
         }
     }
 
-    public void setPuntos(Point punto1, Point punto2){
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            img.undo();
+            repaint();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            img.redo();
+            repaint();
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            if (ft != null) {
+                ft.dispose();
+            }
+            this.punto1 = new Point(e.getX(), e.getY() - 50);
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            if (img != null) {
+                ft = new Ventana(img);
+            }
+        }
+        if (e.getButton() == MouseEvent.BUTTON2) {
+            if (ft != null) {
+                ft.dispose();
+            }
+            Point aux = null;
+            setPuntos(aux, aux);
+        }
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            this.punto2 = new Point(e.getX(), e.getY() - 50);
+            verificarPunto2();
+            repaint();
+            ft = new Ventana(img, punto1, punto2);
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("IMAGEN")) {
+            repaint();
+        }
+    }
+
+    public void setPuntos(Point punto1, Point punto2) {
         this.punto1 = punto1;
         this.punto2 = punto2;
         repaint();
@@ -135,81 +211,5 @@ public class Panel extends JPanel implements PropertyChangeListener, MouseListen
 
     public void setPunto2(Point punto2) {
         this.punto2 = punto2;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT){
-            img.restarCambios();
-            repaint();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-            img.aumentarCambios();
-            repaint();
-        }
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1){
-            if (ft != null) {
-                ft.dispose();
-            }
-            this.punto1 = new Point(e.getX(), e.getY() - 50);
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON3){
-            if (img != null){
-                ft = new Ventana(img);
-            }
-        }
-        if (e.getButton() == MouseEvent.BUTTON2){
-            if (ft != null) {
-                ft.dispose();
-            }
-            Point aux = null;
-            setPuntos(aux,aux);
-        }
-        if (e.getButton() == MouseEvent.BUTTON1){
-            this.punto2 = new Point(e.getX(), e.getY()-50);
-            verificarPunto2();
-            repaint();
-            ft = new Ventana(img,punto1,punto2);
-        }
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("IMAGEN")){
-            repaint();
-        }
     }
 }

@@ -6,19 +6,18 @@ import java.awt.*;
 import java.io.File;
 
 public class Frame extends JFrame {
-    //    private Logger logger = LogManager.getRootLogger();
+
     private Imagen img;
     private Panel panelImagen;
-    private Point punto1;
-    private Point punto2;
 
     public Frame() {
         init1();
     }
 
     public void init1() {
-        setSize(1000, 1000);
-        setPreferredSize(new Dimension(1000, 1000));
+        //setSize(500, 500);
+        setTitle("Practico 5");
+        setPreferredSize(new Dimension(500, 500));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setLayout(null);
@@ -48,8 +47,6 @@ public class Frame extends JFrame {
                 panelImagen.setSize(imgDimension);
                 this.setPreferredSize(imgDimension);
                 this.setSize(imgDimension);
-//                logger.debug("Las para el frame dimensiones son: " + img.getAncho() + " de ancho y " + img.getAlto() + " de alto");
-                System.out.println("Las dimensiones del frame son: " + this.getWidth() + " de ancho y " + this.getHeight() + " de alto");
             }
         });
 
